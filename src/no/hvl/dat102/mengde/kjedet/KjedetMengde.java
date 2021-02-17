@@ -75,10 +75,18 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 		boolean funnet = false;
 		LinearNode<T> forgjenger, aktuell;
 		T resultat = null;
-		/*
-		 * Fyll ut
-		 * 
-		 */
+		forgjenger = start;
+		aktuell = start.getNeste();
+
+		while (funnet = false) {
+			if (aktuell.getElement().equals(element)) {
+				forgjenger.setElement(aktuell.getElement());
+				resultat = aktuell.getElement();
+				funnet = true;
+				antall--;
+			}
+		}
+
 		return resultat;
 	}//
 
@@ -113,11 +121,19 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 				likeMengder = false;
 			} else {
 				likeMengder = true;
-				// ...
+
+				// Skjønner ikke hvorfor dette ikke fungerer
+
+				Iterator<T> it = ny.iterator();
+				while (it.hasNext() && likeMengder) {
+					if (!(it.equals(m2))) {
+						likeMengder = false;
+
+					}
+				}
 				return likeMengder;
 			}
 		}
-		return false;
 
 	}
 
@@ -136,10 +152,19 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 		MengdeADT<T> begge = new KjedetMengde<T>();
 		LinearNode<T> aktuell = start;
 		T element = null;
+		
+		// som sagt en del feil , skulle bruke settInn metoden istedenfor leggTil men
+		// skjønte ikke hvordan
 
-		/*
-		 * Fyll ut
-		 */
+		Iterator<T> it = this.oppramser();
+		while (it.hasNext()) {
+			begge.leggTil(it.next());
+		}
+		Iterator<T> it2 = m2.oppramser();
+		while (it2.hasNext()) {
+			begge.leggTil(it.next());
+		}
+
 		return begge;
 	}//
 
@@ -147,11 +172,19 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 	public MengdeADT<T> snitt(MengdeADT<T> m2) {
 		MengdeADT<T> snittM = new KjedetMengde<T>();
 		T element;
+		Iterator<T> it = this.oppramser();
+		while (it.hasNext()) {
+			if (it.equals(m2)) {
+				// igjen må få til settInn istedenfor leggTil
+				snittM.leggTil(m2);
+			}
+		}
 		/*
 		 * Fyll ut...
 		 * 
 		 * if (this.inneholder(element)) ((KjedetMengde<T>) snittM).settInn(element);
 		 */
+
 		return snittM;
 	}
 
@@ -159,10 +192,13 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 	public MengdeADT<T> differens(MengdeADT<T> m2) {
 		MengdeADT<T> differensM = new KjedetMengde<T>();
 		T element;
-		/*
-		 * Fyll ut
-		 * 
-		 */
+		Iterator<T> it = this.oppramser();
+		while (it.hasNext()) {
+			if (!(it.equals(m2))) {
+				// igjen må få til settInn istedenfor leggTil
+				differensM.leggTil(this);
+			}
+		}
 
 		return differensM;
 	}
@@ -170,7 +206,11 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 	@Override
 	public boolean undermengde(MengdeADT<T> m2) {
 		boolean erUnderMengde = true;
-		// Fyll ut
+		Iterator<T> it= m2.oppramser();
+		while(it.hasNext()&& erUnderMengde) {
+			if(!(it.equals(this)))
+				erUnderMengde=false;
+		}
 		return erUnderMengde;
 	}
 

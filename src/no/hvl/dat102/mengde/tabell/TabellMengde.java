@@ -70,16 +70,24 @@ public class TabellMengde<T> implements MengdeADT<T> {
 	@Override
 	public T fjern(T element) {
 		//TODO
-		// Søker etter og fjerner element. Returnerer null-ref ved ikke-funn
+		// Sï¿½ker etter og fjerner element. Returnerer null-ref ved ikke-funn
 
 		if (erTom())
 			throw new EmptyCollectionException("mengde");
 
 		boolean funnet = false;
 		T svar = null;
-		/*
-		 * 
-		 */
+		int i=0;
+		
+		while(funnet=false) {
+			if(tab[i]==element && i<tab.length) {
+				svar=tab[i];
+				tab[i]=null;
+				funnet=true;
+				antall--;
+			}else i++;
+		}
+
 		return svar;
 	}
 
@@ -95,8 +103,8 @@ public class TabellMengde<T> implements MengdeADT<T> {
 	}
 	
 	/*
-	 * Når vi overkjører (override) equals- meteoden er det anbefalt at vi også
-	 * overkjører hascode-metoden da en del biblioterker burker hascode sammen med
+	 * Nï¿½r vi overkjï¿½rer (override) equals- meteoden er det anbefalt at vi ogsï¿½
+	 * overkjï¿½rer hascode-metoden da en del biblioterker burker hascode sammen med
 	 * equals. Vi kommer tilbake til forklaring og bruk av hascode senere i faget.
 	 */
 	@Override
@@ -114,9 +122,18 @@ public class TabellMengde<T> implements MengdeADT<T> {
 		boolean likeMengder = true;
 		T element;
 
-		/*
-		 * ...
-		 */
+		//igjen forstÃ¥r ikke hvorfor dette ikke fungerer
+				Iterator<T> it= m2.iterator();
+				while(it.hasNext()&&likeMengder) {
+					if(!(it.equals(m2))){
+						likeMengder=false;
+						
+					}
+				}
+				/*
+				 * ...
+				 */
+
 		return likeMengder;
 	}
 
@@ -143,10 +160,19 @@ public class TabellMengde<T> implements MengdeADT<T> {
 		//TODO
 		MengdeADT<T> begge = new TabellMengde<T>();
 		T element = null;
+		Iterator<T> it = this.oppramser();
+		while (it.hasNext()) {
+			begge.leggTil(it.next());
+		}
+		Iterator<T> it2 = m2.oppramser();
+		while (it2.hasNext()) {
+			begge.leggTil(it.next());
+		}
 		/*
 		 * ...
 		 * 
 		 */
+
 		return begge;
 	}//
 
@@ -178,7 +204,12 @@ public class TabellMengde<T> implements MengdeADT<T> {
 	public boolean undermengde(MengdeADT<T> m2) {
 		//TODO
 		boolean erUnderMengde = true;
-		// ...
+		Iterator<T> it= m2.oppramser();
+		while(it.hasNext()&& erUnderMengde) {
+			if(!(it.equals(this)))
+				erUnderMengde=false;
+		}
+
 		return false;
 	}
 
