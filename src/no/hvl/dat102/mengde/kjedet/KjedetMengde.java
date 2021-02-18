@@ -169,15 +169,16 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 	public MengdeADT<T> union(MengdeADT<T> m2) {
 		MengdeADT<T> begge = new KjedetMengde<T>();
 		LinearNode<T> aktuell = start;
-		T element = null;
+		T element;
 
-		Iterator<T> it = this.oppramser();
-		while (it.hasNext()) {
-			((KjedetMengde<T>) begge).settInn(it.next());
+		while (aktuell != null) {
+			((KjedetMengde<T>) begge).settInn(aktuell.getElement());
+			aktuell = aktuell.getNeste();
 		}
-		Iterator<T> it2 = m2.oppramser();
-		while (it2.hasNext()) {
-			((KjedetMengde<T>) begge).settInn(it.next());
+		Iterator<T> it = m2.oppramser();
+		while (it.hasNext()) {
+			element = it.next();
+			((KjedetMengde<T>) begge).settInn(element);
 		}
 
 		return begge;
@@ -187,17 +188,13 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 	public MengdeADT<T> snitt(MengdeADT<T> m2) {
 		MengdeADT<T> snittM = new KjedetMengde<T>();
 		T element;
-		Iterator<T> it = this.oppramser();
+		Iterator<T> it = m2.oppramser();
 		while (it.hasNext()) {
-			if (it.equals(m2)) {
-				((KjedetMengde<T>) snittM).settInn(m2);
+			element = it.next();
+			if (this.inneholder(element)) {
+				((KjedetMengde<T>) snittM).settInn(element);
 			}
 		}
-		/*
-		 * Fyll ut...
-		 * 
-		 * if (this.inneholder(element)) ((KjedetMengde<T>) snittM).settInn(element);
-		 */
 
 		return snittM;
 	}
@@ -206,10 +203,11 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 	public MengdeADT<T> differens(MengdeADT<T> m2) {
 		MengdeADT<T> differensM = new KjedetMengde<T>();
 		T element;
-		Iterator<T> it = this.oppramser();
+		Iterator<T> it = m2.oppramser();
 		while (it.hasNext()) {
-			if (!(it.equals(m2))) {
-				((KjedetMengde<T>) differensM).settInn(this);
+			element = it.next();
+			if (!(this.inneholder(element))) {
+				((KjedetMengde<T>) differensM).settInn(element);
 			}
 		}
 
@@ -221,7 +219,7 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 		boolean erUnderMengde = true;
 		Iterator<T> it= m2.oppramser();
 		while(it.hasNext()&& erUnderMengde) {
-			if(!(it.equals(this)))
+			if(!(this.inneholder(it.next())))
 				erUnderMengde=false;
 		}
 		return erUnderMengde;

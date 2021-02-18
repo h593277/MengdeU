@@ -6,6 +6,7 @@ import java.util.Random;
 
 import no.hvl.dat102.exception.EmptyCollectionException;
 import no.hvl.dat102.mengde.adt.MengdeADT;
+import no.hvl.dat102.mengde.kjedet.KjedetMengde;
 
 public class TabellMengde<T> implements MengdeADT<T> {
 	// ADT-en Mengde implementert som tabell
@@ -158,23 +159,22 @@ public class TabellMengde<T> implements MengdeADT<T> {
 	 * (MengdeADT<T>)begge; }
 	 */
 	@Override
-
 	public MengdeADT<T> union(MengdeADT<T> m2) {
 		//TODO
 		MengdeADT<T> begge = new TabellMengde<T>();
-		T element = null;
+		T element;
+		
 		Iterator<T> it = this.oppramser();
 		while (it.hasNext()) {
-			begge.leggTil(it.next());
+			element = it.next();
+			((TabellMengde<T>) begge).settInn(element);
 		}
 		Iterator<T> it2 = m2.oppramser();
 		while (it2.hasNext()) {
-			((TabellMengde<T>) begge).settInn(it.next());
+			element = it2.next();
+			((TabellMengde<T>) begge).settInn(element);
 		}
-		/*
-		 * ...
-		 * 
-		 */
+	
 
 		return begge;
 	}//
@@ -183,9 +183,13 @@ public class TabellMengde<T> implements MengdeADT<T> {
 	public MengdeADT<T> snitt(MengdeADT<T> m2) {
 		MengdeADT<T> snittM = new TabellMengde<T>();
 		T element = null;
-		/*
-		 * ...
-		 */
+		Iterator<T> it = m2.oppramser();
+		while (it.hasNext()) {
+			element = it.next();
+			if (this.inneholder(element)) {
+				((TabellMengde<T>) snittM).settInn(element);
+			}
+		}
 		return snittM;
 	}
 
@@ -194,11 +198,13 @@ public class TabellMengde<T> implements MengdeADT<T> {
 		//TODO
 		MengdeADT<T> differensM = new TabellMengde<T>();
 		T element;
-		/*
-		 * Fyll ut
-		 * 
-		 * if (!m2.inneholder(element)) ((TabellMengde<T>) differensM).settInn(element);
-		 */
+		Iterator<T> it = m2.oppramser();
+		while (it.hasNext()) {
+			element = it.next();
+			if (!(this.inneholder(element))) {
+				((TabellMengde<T>) differensM).settInn(element);
+			}
+		}
 
 		return differensM;
 	}
