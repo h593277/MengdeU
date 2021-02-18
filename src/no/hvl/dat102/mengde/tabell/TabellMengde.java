@@ -79,11 +79,12 @@ public class TabellMengde<T> implements MengdeADT<T> {
 		T svar = null;
 		int i=0;
 		
-		while(funnet=false) {
-			if(tab[i]==element && i<tab.length) {
-				svar=tab[i];
-				tab[i]=null;
-				funnet=true;
+		while(!funnet && i < antall) {
+			if(tab[i].equals(element) ) {
+				svar = tab[i];
+				tab[i] = tab[antall-1];
+				tab[antall-1] = null;
+				funnet = true;
 				antall--;
 			}else i++;
 		}
@@ -118,22 +119,24 @@ public class TabellMengde<T> implements MengdeADT<T> {
 
 	@Override
 	public boolean equals(Object m2) {
-		//TODO
 		boolean likeMengder = true;
 		T element;
-
-		//igjen forstår ikke hvorfor dette ikke fungerer
-				Iterator<T> it= m2.iterator();
-				while(it.hasNext()&&likeMengder) {
-					if(!(it.equals(m2))){
-						likeMengder=false;
-						
-					}
+		
+		if(this.antall != ((MengdeADT<T>)m2).antall())
+		{
+			likeMengder = false;
+		}
+		else
+		{
+			Iterator<T> it = ((MengdeADT<T>) m2).oppramser();
+			while(it.hasNext()&&likeMengder) {
+				element = it.next();
+				if(!(this.inneholder(element))){
+					likeMengder=false;
 				}
-				/*
-				 * ...
-				 */
-
+			}
+		}
+				
 		return likeMengder;
 	}
 
@@ -166,7 +169,7 @@ public class TabellMengde<T> implements MengdeADT<T> {
 		}
 		Iterator<T> it2 = m2.oppramser();
 		while (it2.hasNext()) {
-			begge.leggTil(it.next());
+			((TabellMengde<T>) begge).settInn(it.next());
 		}
 		/*
 		 * ...
