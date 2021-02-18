@@ -218,9 +218,18 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 	public boolean undermengde(MengdeADT<T> m2) {
 		boolean erUnderMengde = true;
 		Iterator<T> it= m2.oppramser();
-		while(it.hasNext()&& erUnderMengde) {
-			if(!(this.inneholder(it.next())))
-				erUnderMengde=false;
+		if(m2.antall() > this.antall)
+		{
+			erUnderMengde = false;
+		}
+		else
+		{
+			while (it.hasNext()) {
+				T element = it.next();
+				if (!this.inneholder(element)) {
+					erUnderMengde = false;
+				}
+			}
 		}
 		return erUnderMengde;
 	}

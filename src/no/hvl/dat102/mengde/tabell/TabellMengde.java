@@ -214,12 +214,22 @@ public class TabellMengde<T> implements MengdeADT<T> {
 		//TODO
 		boolean erUnderMengde = true;
 		Iterator<T> it= m2.oppramser();
-		while(it.hasNext()&& erUnderMengde) {
-			if(!(it.equals(this)))
-				erUnderMengde=false;
+		if(m2.antall() > this.antall)
+		{
+			erUnderMengde = false;
 		}
+		else
+		{
+			while (it.hasNext()) {
+				T element = it.next();
+				if (!this.inneholder(element)) {
+					erUnderMengde = false;
+				}
+			}
+		}
+		
 
-		return false;
+		return erUnderMengde;
 	}
 
 	@Override
