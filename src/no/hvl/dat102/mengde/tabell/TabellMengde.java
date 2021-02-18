@@ -172,7 +172,10 @@ public class TabellMengde<T> implements MengdeADT<T> {
 		Iterator<T> it2 = m2.oppramser();
 		while (it2.hasNext()) {
 			element = it2.next();
-			((TabellMengde<T>) begge).settInn(element);
+			if(!begge.inneholder(element))
+			{
+				((TabellMengde<T>) begge).settInn(element);
+			}
 		}
 	
 
@@ -195,14 +198,20 @@ public class TabellMengde<T> implements MengdeADT<T> {
 
 	@Override
 	public MengdeADT<T> differens(MengdeADT<T> m2) {
-		//TODO
 		MengdeADT<T> differensM = new TabellMengde<T>();
+		
+		Iterator<T> thisIt = this.oppramser();
+		while(thisIt.hasNext())
+		{
+			differensM.leggTil(thisIt.next());
+		}
+		
 		T element;
 		Iterator<T> it = m2.oppramser();
 		while (it.hasNext()) {
 			element = it.next();
-			if (!(this.inneholder(element))) {
-				((TabellMengde<T>) differensM).settInn(element);
+			if ((this.inneholder(element))) {
+				((TabellMengde<T>) differensM).fjern(element);
 			}
 		}
 

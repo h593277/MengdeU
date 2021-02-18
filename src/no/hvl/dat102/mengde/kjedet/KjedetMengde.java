@@ -7,6 +7,7 @@ import java.util.*;
 
 import no.hvl.dat102.exception.EmptyCollectionException;
 import no.hvl.dat102.mengde.adt.*;
+import no.hvl.dat102.mengde.tabell.TabellMengde;
 
 public class KjedetMengde<T> implements MengdeADT<T> {
 	private static Random rand = new Random();
@@ -178,7 +179,10 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 		Iterator<T> it = m2.oppramser();
 		while (it.hasNext()) {
 			element = it.next();
-			((KjedetMengde<T>) begge).settInn(element);
+			if(!begge.inneholder(element))
+			{
+				((KjedetMengde<T>) begge).settInn(element);
+			}
 		}
 
 		return begge;
@@ -202,12 +206,18 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 	@Override
 	public MengdeADT<T> differens(MengdeADT<T> m2) {
 		MengdeADT<T> differensM = new KjedetMengde<T>();
+		Iterator<T> thisIt = this.oppramser();
+		while(thisIt.hasNext())
+		{
+			differensM.leggTil(thisIt.next());
+		}
+		
 		T element;
 		Iterator<T> it = m2.oppramser();
 		while (it.hasNext()) {
 			element = it.next();
-			if (!(this.inneholder(element))) {
-				((KjedetMengde<T>) differensM).settInn(element);
+			if ((this.inneholder(element))) {
+				((KjedetMengde<T>) differensM).fjern(element);
 			}
 		}
 
