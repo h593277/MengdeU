@@ -1,6 +1,5 @@
 package no.hvl.dat102.mengde.datakontakt;
 
-import java.util.Iterator;
 import java.util.Scanner;
 
 import no.hvl.dat102.mengde.adt.MengdeADT;
@@ -10,19 +9,22 @@ public class TekstGrenseSnitt {
 
 	public static Medlem lesMedlem()
 	{
-		Medlem medlemLes = null;
+		
 		Scanner scanner = new Scanner(System.in);
-		Hobby hobbier = null;
 		MengdeADT<Hobby> hobbyene = new TabellMengde<>();
 		
 		System.out.println("Skriv in navnet");
-		medlemLes.setNavn(scanner.nextLine());
+		String navn = scanner.nextLine();
 		
 		System.out.println("Skriv in hobby");
-		hobbier.setHobbyNavn(scanner.nextLine());
+		Hobby hobbier = new Hobby(scanner.nextLine());
 		hobbyene.leggTil(hobbier);
 		
-		medlemLes.setHobbyer(hobbyene);
+		System.out.println("Skriv in hobby 2");
+		Hobby hobbier2 = new Hobby(scanner.nextLine());
+		hobbyene.leggTil(hobbier2);
+		
+		Medlem medlemLes = new Medlem(navn, hobbyene, -1);
 		
 		return medlemLes;
 	}
@@ -35,17 +37,28 @@ public class TekstGrenseSnitt {
 	
 	public static void skrivParListe(Datakontakt arkiv)
 	{
-		Iterator<Medlem> medlemIterator = arkiv.getMedlemsListe().oppramser();
+		MengdeADT<Medlem> listet = new TabellMengde<Medlem>();
 		Medlem medlem1 = null;
-		int index = -1;
-		while(medlemIterator.hasNext())
+		Medlem medlem2 = null;
+		Medlem[] tabell = arkiv.getMedlemsListe();
+		int antallPar = 0;
+		System.out.println("Parnavn               " + "Hobbyer");
+		
+		for(int i = 0; i < arkiv.getAntallMedlemmer(); i++)
 		{
-			medlem1 = medlemIterator.next();
-			while(medlemIterator.hasNext())
+			if(!listet.inneholder(tabell[i]) && tabell[i].getStatusIndeks() != -1)
 			{
-				//if(medlemIterator.next().getStatusIndeks())
+				medlem1 = tabell[i];
+				medlem2 = tabell[medlem1.getStatusIndeks()];
+				System.out.println(medlem1.getNavn() + " og " + medlem2.getNavn() + "		" + medlem1.getHobbyer().toString());
+				listet.leggTil(medlem1);
+				listet.leggTil(medlem2);
+				antallPar++;
 			}
+			
 		}
+		
+		System.out.println("Antall par: " + antallPar);
 	}
 
 }

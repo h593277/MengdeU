@@ -255,5 +255,19 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 		start = nyNode;
 		antall++;
 	}
+	
+	@Override
+	public String toString()
+	{
+		String resultat = "";
+		LinearNode<T> aktuell = start;
+		while(aktuell != null)
+		{
+			resultat += aktuell.getElement().toString() + "\t"; aktuell = aktuell.getNeste();
+		}
+			
+		return resultat;
+	}
+
 
 }// class
